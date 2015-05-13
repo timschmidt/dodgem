@@ -4,6 +4,7 @@
 		<title>Dodgem - an exercise in integrating Dojo and Emscripten</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="include/dijit/themes/claro/claro.css" type="text/css">
+                <script src="add.js"></script>
 		<script src="include/dojo/dojo.js" data-dojo-config="parseOnLoad: true, async: true, isDebug: true"></script>
 		<script>
         require([
@@ -57,8 +58,9 @@
               
           button1.on('click', function(){
 			  // call C++ from here
-			  
-			  text_item3.set('value', "button pushed!");
+			  var res = Module.ccall('add', 'number', ['number', 'number'], [text_item1.value, text_item2.value]); 
+                          console.log(res);
+			  text_item3.set('value', res);
 	      });
 	    
         });
