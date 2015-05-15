@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dodgem - an exercise in integrating Dojo and Emscripten</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="include/dijit/themes/claro/claro.css" type="text/css">
+                <script src="add.js"></script>
+		<script src="include/dojo/dojo.js" data-dojo-config="parseOnLoad: true, async: true, isDebug: true"></script>
+		<script>
+        require([
+	      "dojo/_base/declare",
+	      "dojo/_base/array",
+		  "dojo/on",
+		  "dojo/query",
+		  "dojo/io-query",
+		  "put-selector/put",
+		  "dijit/registry",
+		  "dojo/request/xhr",
+		  "dojo/dom",
+		  "dojo/dom-form",
+		  "dojo/dom-construct",
+		  "dojo/json",
+		  "dijit/form/TextBox",
+		  "dijit/form/Button",
+		  "dojo/domReady!"
+		  ],
+		function(declare, DojoArray, on, query, ioQuery, put, DijitRegistry, xhr, dom, domForm, domConst, JSON, TextBox, Button){
+
+		  // FORM OBJECTS
+		  var text_item1 = new TextBox({
+            name: "item1",
+            style: "width: 40%;",
+            value: "" /* no or empty value! */,
+          }, "form1_item1");
+          
+          var text_item2 = new TextBox({
+            name: "item2",
+            style: "width: 40%;",
+            value: "" /* no or empty value! */,
+          }, "form1_item2");
+          
+          var text_item3 = new TextBox({
+            name: "item3",
+            style: "width: 40%;",
+            value: "" /* no or empty value! */,
+          }, "form1_item3");
+          
+          var button1 = new Button({
+			  name: "button1",
+			  label: "Push me!"
+		  }, "form1_button1");
+          
+          text_item1.on('change', function(){
+			  // call C++ from here
+			  
+			  text_item3.set('value', "text changed!");
+		  });
+              
+          button1.on('click', function(){
+			  // call C++ from here
+			  var res = Module.ccall('add', 'number', ['number', 'number'], [text_item1.value, text_item2.value]); 
+                          console.log(res);
+			  text_item3.set('value', res);
+	      });
+	    
+        });
+	</script>
+	</head>
+<body class="claro">
+    <div id="form1_div">
+		<form id="form1">
+		<p><label>Item 1: <input id="form1_item1"></label></p>
+		<p><label>Item 2: <input id="form1_item2"></label></p>
+		<p><label>Item 3: <input id="form1_item3"></label></p>
+		<p><input id="form1_button1"></p>
+		</form>
+    </div>
+</body>
+</html>

@@ -4,8 +4,6 @@
     <title>Dodgem - an exercise in integrating Dojo and Emscripten</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="include/dijit/themes/claro/claro.css" type="text/css">
-      //One of the two scripts below: NOT BOTH
-      //<script src="dmath.js"></script>
       <script src="dmath_embind.js"></script>
       <script src="include/dojo/dojo.js" data-dojo-config="parseOnLoad: true, async: true, isDebug: true"></script>
       <script>
@@ -65,14 +63,14 @@
                   
             add_button.on('click', function(){
                   // call C++ from here
-                  var res = Module.ccall('add', 'number', ['number', 'number'], [text_item1.value, text_item2.value]);
+                  var res = Module.add(Number(text_item1.value), Number(text_item2.value));
                   console.log(res);
                   text_item3.set('value', res);
             });
           
             subtract_button.on('click', function(){
                // call C++ from here
-               var res = Module.ccall('subtract', 'number', ['number', 'number'], [text_item1.value, text_item2.value]);
+               var res = Module.subtract(Number(text_item1.value), Number(text_item2.value));
                console.log(res);
                text_item3.set('value', res);
             });
