@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html >
+<head>
+
+	<link rel="stylesheet" href="include/dijit/themes/claro/claro.css" type="text/css">
+	<script src="include/dojo/dojo.js" data-dojo-config="parseOnLoad: true, async: true, isDebug: true"></script>
+        <script src="dmath_embind.js"></script>
+	<script>
+        require([
+          "dijit/layout/BorderContainer",
+	  "dijit/layout/ContentPane",
+	      "dojo/_base/declare",
+	      "dojo/_base/array",
+		  "dojo/on",
+		  "dojo/query",
+		  "dojo/io-query",
+		  "put-selector/put",
+		  "dijit/registry",
+		  "dojo/request/xhr",
+		  "dojo/dom",
+		  "dojo/dom-form",
+		  "dojo/dom-construct",
+		  "dojo/json",
+		  "dijit/form/TextBox",
+		  "dijit/form/Button",
+		  "dojo/domReady!"
+		  ],
+		function(BorderContainer, ContentPane, declare, DojoArray, on, query, ioQuery, put, DijitRegistry, xhr, dom, domForm, domConst, JSON, TextBox, Button){
+
+    // FORM OBJECTS
+
+    // create a BorderContainer as the top widget in the hierarchy
+    var bc = new BorderContainer({
+      style: "height: 300px; width: 500px;",
+      gutters: "true;",
+      liveSplitters:"true;"
+    });
+
+    // create a ContentPane as the left pane in the BorderContainer
+    var cp1 = new ContentPane({
+        splitter:"true",
+        region: "left",
+        style: "width: 100px",
+        //content: "hello world"
+    });
+    bc.addChild(cp1);
+
+    // create a ContentPane as the center pane in the BorderContainer
+    var cp2 = new ContentPane({
+        region: "center",
+        splitter:"true",
+        content: "how are you?"
+    });
+    bc.addChild(cp2);
+
+            var text_item1 = new TextBox({
+                name: "item1",
+                style: "width: 40%;",
+                value: "" /* no or empty value! */,
+            }, "form1_item1");  //name only needed for use with html
+            cp1.addChild(text_item1,1);
+
+            var text_item2 = new TextBox({
+                name: "item2",
+                style: "width: 40%;",
+                value: "" /* no or empty value! */,
+            }, "form1_item2");
+            cp1.addChild(text_item2,2);
+
+            var text_item3 = new TextBox({
+                name: "item3",
+                label: "result",
+                style: "width: 40%;",
+                value: "" /* no or empty value! */,
+            });
+            cp1.addChild(text_item3,3);
+
+            var subtract_button = new Button({
+                  name: "substract_button",
+                  label: "Subtract"
+             });
+             cp2.addChild(subtract_button,1);
+              
+            var add_button = new Button({
+                name: "add_button",
+                label: "Add"
+            });
+            
+
+            var multiply_button = new Button({
+                name: "multiply_button",
+                label: "Multiply"
+            });
+
+            text_item1.on('change', function(){
+            // call C++ from here
+                  
+            text_item3.set('value', "text changed!");
+            });
+                  
+            add_button.on('click', function(){
+                  // call C++ from here
+                  var res = Module.add(Number(text_item1.value), Number(text_item2.value));
+                  console.log(res);
+                  text_item3.set('value', res);
+            });
+          
+            subtract_button.on('click', function(){
+               // call C++ from here
+               var res = Module.subtract(Number(text_item1.value), Number(text_item2.value));
+               console.log(res);
+               text_item3.set('value', res);
+            });
+        	    
+            multiply_button.on('click', function(){
+               // call C++ from here
+               var res = Module.multiply(Number(text_item1.value), Number(text_item2.value));
+               console.log(res);
+               text_item3.set('value', res);
+            });
+
+
+    // put the top level widget into the document, and then call startup()
+    bc.placeAt(document.body);
+    bc.startup();
+});
+	</script>
+</head>
+<body class="claro">
+</body>
+</html>
