@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dodgem - an exercise in integrating Dojo and Emscripten</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="include/dijit/themes/claro/claro.css" type="text/css">
+		<script src="include/dojo/dojo.js" data-dojo-config="parseOnLoad: true, async: true, isDebug: true"></script>
+		<script>
+        require([
+        "dijit/layout/BorderContainer",
+	      "dijit/layout/ContentPane",
+        "dijit/form/TextBox",
+        "dijit/form/Button",
+        "dijit/form/RadioButton",
+        "dojo/parser",
+        "dojo/dom",
+        "dojo/dom-construct",
+        "dojo/domReady!"
+		  ],
+		function(BorderContainer, ContentPane, TextBox, Button, RadioButton, parser, Dom, DomConstruct){
+
+		  // FORM OBJECTS
+
+      parser.parse();
+        var radioOne = new RadioButton({
+        checked: true,
+        value: "tea",
+        name: "drink",
+      }, "radioOne").startup();
+
+		  var text_item1 = new TextBox({
+            name: "item1",
+            style: "width: 40%;",
+            value: "" /* no or empty value! */,
+          }, "form1_item1");
+          
+      var text_item2 = new TextBox({
+            name: "item2",
+            style: "width: 40%;",
+            value: "" /* no or empty value! */,
+          }, "form1_item2");
+          
+      var text_item3 = new TextBox({
+            name: "item3",
+            style: "width: 40%;",
+            value: "" /* no or empty value! */,
+          }, "form1_item3");
+          
+      var button1 = new Button({
+			  name: "button1",
+			  label: "Push me!"
+		  }, "form1_button1");
+          
+      var button2 = new Button({
+			  name: "button2",
+			  label: "Drink Choice"
+		  }, "form1_button2");
+
+          text_item1.on('change', function(){
+			  // call C++ from here
+			  
+			  text_item3.set('value', "text changed!");
+		  });
+  
+      button1.on('click', function(){
+			  // call C++ from here
+			  text_item3.set('value', "button pushed!");
+      });
+
+      button2.on('click', function(){
+			  // call C++ from here
+			  text_item3.set('value', "Put Drink Choice here?");
+      });
+	    
+        });
+	</script>
+	</head>
+<body class="claro">
+    <div id="form1_div">
+		<form id="form1">
+      <input type="radio" name="drink" id="radioOne" checked value="tea"/> <label for="radioOne">Tea</label> <br />
+      <input type="radio" data-dojo-type="dijit/form/RadioButton" name="drink" id="radioTwo" value="coffee"/> 
+          <label for="radioTwo">Cola</label> <br />
+      <input type="radio" data-dojo-type="dijit/form/RadioButton" name="drink" id="radio3" value="cola"/> 
+          <label for="radioTwo">Coffee</label> 
+      <br /><br />
+      <button data-dojo-type="dijit/form/Button" type="button">
+        Show form submit value
+        <script type="dojo/on" data-dojo-event="click">
+            require(["dojo/dom"], function(dom){
+                 with(dom.byId('myform'))with(elements[0])with(elements[checked?0:1])alert(name+'='+value);
+                 return false;
+            });
+        </script>
+      </button>
+      <input id="form1_button2"></input>
+      <br />
+      <p><label>Item 1: <input id="form1_item1"></label></p>
+      <p><label>Item 2: <input id="form1_item2"></label></p>
+      <p><label>Item 3: <input id="form1_item3"></label></p>
+      <p><input id="form1_button1"></p>
+		</form>
+    </div>
+</body>
+</html>
