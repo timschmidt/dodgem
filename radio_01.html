@@ -21,12 +21,23 @@
 
 		  // FORM OBJECTS
 
-      parser.parse();
-        var radioOne = new RadioButton({
-        checked: true,
+      var radioOne = new RadioButton({
+        checked: false,
         value: "tea",
         name: "drink",
       }, "radioOne").startup();
+
+      var radioTwo = new RadioButton({
+        checked: true,
+        value: "milk",
+        name: "drink",
+      }, "radioTwo").startup();
+
+      var radio3 = new RadioButton({
+        checked: false,
+        value: "coffee",
+        name: "drink",
+      }, "radio3").startup();
 
 		  var text_item1 = new TextBox({
             name: "item1",
@@ -78,17 +89,15 @@
 <body class="claro">
     <div id="form1_div">
 		<form id="form1">
-      <input type="radio" name="drink" id="radioOne" checked value="tea"/> <label for="radioOne">Tea</label> <br />
-      <input type="radio" data-dojo-type="dijit/form/RadioButton" name="drink" id="radioTwo" value="coffee"/> 
-          <label for="radioTwo">Cola</label> <br />
-      <input type="radio" data-dojo-type="dijit/form/RadioButton" name="drink" id="radio3" value="cola"/> 
-          <label for="radioTwo">Coffee</label> 
+      <input type="radio" name="drink" id="radioOne" checked value="tea"/> <label for="radioOne">tea</label> <br />
+      <input type="radio" name="drink" id="radioTwo" value="milk"/> <label for="radioTwo">milk</label> <br />
+      <input type="radio" name="drink" id="radio3" value="coffee"/> <label for="radio3">coffee</label> 
       <br /><br />
       <button data-dojo-type="dijit/form/Button" type="button">
         Show form submit value
         <script type="dojo/on" data-dojo-event="click">
             require(["dojo/dom"], function(dom){
-                 with(dom.byId('myform'))with(elements[0])with(elements[checked?0:1])alert(name+'='+value);
+                 with(dom.byId('form1'))with(elements[0])with(elements[checked?0:2])alert(name+'='+value);
                  return false;
             });
         </script>
